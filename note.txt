@@ -1,0 +1,369 @@
+**************************************************************
+*************  Wordoress pour développeur     ****************
+**************************************************************
+
+*****************************************
+Installation de WP :
+*****************************************
+
+on instale wordpress dans un dossier /eprojet/ dans xampp.
+    Nom de la BDD : eprojet
+    Titre du site : Mes petites annonces
+
+
+Etapes d'installation :
+1- télécharger wp sur  https://fr.wordpress.org/
+2- Dézipper l'archive et mettre le dossier sur xampp ou wamp
+3- dans PHPMyAdmin : créer une BDD (vide)
+4- lancer le site via localhost dans le navigateur et remplir les formulaires :
+        - Nom de la BDD
+        - Identifiant de BDD
+        - Mot de passe de la BDD
+        - Adresse de la BDD : localhost pour nous
+
+        - Titre du site 
+        Identifiant et mot de passe d'administration
+
+5- wp s'installe... puis on se connecte au back-office avec identifiants indiqués précédament.
+
+URL d"accès au back-office par défaut : https://monsite.com/wp-admin/
+
+
+
+********************************************
+Créer un thème enfant :
+********************************************
+
+-Les AVANTAGES d'un thème enfant :
+Grâce au thème enfant , vous pouvez modifier un thème existant en concervant le bénéfice des mises à jour du thème parent (example : nouvelles fonctionnalités, mises à jour de sécurité...)
+
+Un thème enfant vous permet de modifier les STYLES et les FICHIERS TEMPLATES d'un thème existant ârent, ainsi que d'ajouter des FONCTIONNALITES.
+
+-CREER un thème enfant :
+    1- Pour créer un thèmee enfant du thème "twentyseventeen", on crée un dossier "twentyseventeen-child" dans le dossier  /wp-content/themes. On nome le dossier enfant ainsi comme le veut la bonne pratique.
+    2- Y créer un fichier style.css (style sans "s")et y mettre le code suivant :
+
+    /*
+    Theme Name: twentyseventeen-child
+    Template: twentyseventeen
+    */
+
+    @import url("../twentyseventeen/style.css");
+
+
+
+Attention : ne pas séparer les ":" des étiquettes Theme Name et Template ci-dessus par un espace !
+
+Le code CSS de l'enfat ECRASE  le code CSS du parent, car il est exécuté APRES celui du parent.
+
+    3- ACTIVER  le thème enfant dans le back-office. Puis vous pouvez le modifier.
+
+    ************************************************************************************************************************************************************************
+    Le CMS :
+    un + : pour moi : 
+        C ontent   => system de
+        M anagement => gestion de 
+        S ystem   => contenus de 
+********     ****************************************
+
+    4- Modifier un fichier template :
+        pour cela , il suffit de copier le fichier parent que l'on veut modifier dans le dossier du thème enfant.
+        Example : 
+        Copier le fichier footer.php du thème parent et le copier dans le thème enfant.
+        Puis modifier sa structure HTML conformément à la maquette du client.
+
+        Le fichier template enfant REMPLACE celui du thème parent.
+
+    5- Le fichier functions.php :
+    Ce fichier fonctionne différemment : il n'écrase pas le fichier du parent, mais il est chargé AVANT celui du parent. Ainsi, les fonctions enfants s'ajoutent à celles du parent. Nous verrons ce fichier functions.php plus tard dans le cours.
+
+****************************************************************
+La hiérarchie de WP :
+****************************************************************
+
+// Installer l'extension SHOW CURRENT TEMPLATE  de Jotaki Taisuke.
+
+// La hiérarchie de WP :
+Example avec la page d'accueil : si le fichier template front-page.php existe, WP l'utilise pour afficher la page. S'il n'existe pas, WP contenue son "chemin" et prend le fichier suivant home.php. s'il n'existe pas non plus, WP contenue son "chemin" et prend par défaut le fichier index.php. 
+
+// Description des fichiers templates de la hiérarchie :
+un template est un modele de page .  s'il y a 100 pages sur votre site, il n'y a pas 100 fichiers ( comme pour le site  statique) : les contenus sont enregistrés dans une BDD, et seulement quelques fichiers appelés templates affichent le contenus dynamiquement(= automatiquement)
+
+
+index.php : fichier principale du site qui est utilisé si aucun des autres templates demandés n'existent (template par défaut).
+
+archive.php : affiche la liste des articles quand les fichiers spécifique n'existent pas (c'est à dire " author.php, category.php, tag.php ou date.php" => cf(cf : se référer) la hiérarchie).
+
+single.php : affiche un seul article créé dans le back-office ( autrement dit c'est l'affichage détaillé de l'article).
+
+page.php : affiche une page créé dans le back-office.
+
+home.php : afficage de la page d'accueil prioritaire sur index.php si le fichier home.php existe
+
+comments.php : affichage des commentaires.
+
+404.php : affiche la page de contenu non trouvé
+
+search.php : affiche les résultats d'une recherche
+
+
+---------------------------------
+
+functions.php : fichier d'inclusion contenant les fonctions du thème
+
+header.php : fichier d'inclusion du haut du site (systimatiquement inclus dans les templates du site)
+
+footer.php : fichier d'inclusion du bas du site (systimatiquement inclus dans les templates du site)
+
+sidebar.php : fichier d'inclusion de la barre latérale contenant des widgets (ou autre choses) qui est inclus dans les templates du site.
+
+----------------------------------
+/Templates spécifiques :
+On peut dans WP faire des templates particuliers sur la base des fichiers templates d'origine vus ci-dessus, en ajoutant un id ou un slug (identifiant) dans le nom du fichier.
+
+"slug" ségnifie en anglais "identifiant" : il représente un élément de contenu, article ou page. Exemple : l'article "seul sur mars" aura pour slug "seul-sur-mars" et pour url https://monsite.com/seul-sur-mars.
+
+-Page spécifique dans l'ordre de priorité :
+    -page-$slug.php (exemple : page-contact.php)
+    -page-$id.php  (exemple : page-3.php)
+    -page.php
+    -index.php
+
+
+- Catégorie spécifique dans l'ordre de priorité :
+   - category-$slug.php (exemple : category-auto.php)
+   - category-$id.php (exemple : category-105.php)
+   - category.php
+   - archive.php
+   - index.php
+
+
+
+****************************************************************
+Développement d'un thème complet :
+****************************************************************
+
+Les grandes étapes seront :
+    01- Création du thème
+    02-Initiation des zones de widgets
+    03-Initiation des zones de menus
+    04- Création du menu principal et d'une front page
+    05- Création d'un type de contenu "annonces" avec des champs personalisés (CPT UI et ACF)
+    06- Création des templates spécifiques : single-annonce.php et category-blog-auto.php
+    07- Création des templates spécifiques : category.php
+    08- Afficher la dernière annonce parue
+
+
+
+****************************************************************
+01- Création du thème grafique et des ses templates :
+****************************************************************
+// Créer un dossier au nom du thème du eprojet dans :
+    wp-content/themes
+
+Nous allons y mettre tous nos fichiers du thème.
+
+
+// Création du screenshot du site :
+Il s'agit du fichier qui s'appelle screenshot.png. il représente le thème dans le back-office.
+
+//Création de la feuile de style :  style.css
+le fichier style.css contient en commentaire toutes les infos affichées dans le back-office > apparence > thèmes.
+
+On lui met le code suivant :
+
+/*
+Thème Name: eprojet
+Author: moi
+Description: Thème du site de petites annonces de véhicules d'occasion
+Version:1.0
+*/
+
+// Création d'un sous-dossier : /assets/
+On y met les ressources nécessaires au site (img, css, js, etc.).
+
+// Création du fichier d'inclusion header.php :
+pour le code, voir le fichier correspondant.
+
+
+// Création d'un fichier d'inclusion footer.php :
+pour le code, voir le fichier correspondant.
+
+
+// On crée les fichiers templates suivants :
+    index.php
+    page.php
+    single.php
+    front-page.php
+    category.php
+
+
+=> dans category.php : on a écrit "fichier vide pour l'instant"
+
+=> dans les 4 autres fichiers, on a mis le code suivant :
+
+        <?php
+        get_header();   // inclusion de header.php
+        ?>
+
+
+
+            <?php
+                if(have_posts()) :
+                    while (have_posts()) : the_post();
+            ?>
+                        <h2 class="col-lg-12"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
+                        <div class="col-lg-12"><?php the_content(); ?></div>
+
+            <?php
+
+                    endwhile;
+
+                else :
+                    echo '<p>Aucun contenu ne correspond à votre demande...</p>';
+                endif;
+            ?>
+
+<?php
+    get_footer();  // inclusion de footer.php
+?>
+
+
+-----------------------------------------------------------------------
+// La boucle de WP et le code des templates :
+
+Dans les templates de WP, nous mettrons TOUJOURS une boucle, même s'il n'y a qu'un seul contenu à afficher.
+
+On inscrit donc le code ci-dessus au minimum dans tous les templates.
+
+-have_posts() : retourne un booléan pour savoir s'il reste des objets à afficher sur la page en cours.
+Par example , si l'on cherche à afficher les articles (ou les annonces, ou les produits...) cette fonction renverra true tant que tous les articles (ou les annonces, ou produits...) récupérés de la BDD n'aurontpas été affichés.
+
+-the_post() : à l'interieur de la boucle while, la fonction the_post() récupère les données d'un post(=article ou page). puis un curseur interne à WP  séléctionne le post suivant. Lorsque le curseur arrive au dernier post, alors la méthode have_post() renvoie false et la boucle while s'arrete.
+
+-the_content() : affiche le contenu du post.
+
+-the_titlke : affiche le titre.
+
+-the_permalink() : affiche son lien (url)
+
+-the_excerpt() : affiche l'extrait du post
+
+-the_field() : affiche un champ personnalisé
+
+-the_ID() : affiche l'id du post
+
+
+-----------------------------------------------
+Le rest du code :
+get_header() et get_footer() : permet d'inclure header.php & footer.php
+
+-get_sidebar() : permet d'inclure le fichier appelé sidbar.php qui la zone lattérale contenat les widgets
+
+-get_template_part('content', 'monFichier') : permet d'inclure le fichier appelé content-monFichier.php. Ceq inclusions représentent des "sous parties" de template.
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+****************************************************************
+02-Initiation des zones de widgets
+****************************************************************
+
+****************************************************************
+03-Initiation des zones de menus
+****************************************************************
+
+****************************************************************
+04- Création du menu principal et d'une front page
+****************************************************************
+
+****************************************************************
+05- Création d'un type de contenu "annonces" avec des champs personalisés (CPT UI et ACF)
+****************************************************************
+
+****************************************************************
+06- Création des templates spécifiques : single-annonce.php et category-blog-auto.php
+****************************************************************
+
+****************************************************************
+ 07- Création des templates spécifiques : category.php
+****************************************************************
+
+****************************************************************
+ 08- Afficher la dernière annonce parue
+****************************************************************
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+****************************************************************
+****************************************************************
